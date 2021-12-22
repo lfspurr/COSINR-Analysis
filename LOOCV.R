@@ -13,14 +13,14 @@ loo_cv <- bind_rows(lapply(steps, function(step) {
   bind_rows(lapply(1:nrow(temp), function(i) {
     temp_loo <- temp[-i,]
     if(length(unique(temp_loo$timing)) < 2) return()
-    s <- summary(survfit(Surv(os_time, os_event) ~ timing, data = temp_loo))
+    s <- summary(survfit(Surv(os_time, os_event) ~ timing, data = temp_loo), times = 12, extend = TRUE)
     s2 <- survdiff(Surv(os_time, os_event) ~ timing, data = temp_loo)
     list(aneuploidy_thresh = step,
          iteration = i, 
          p_value = 1 - pchisq(s2$chisq, length(s2$n) - 1),
-         one_year_surv_conc = s$surv[1],
-         one_year_surv_seq = s$surv[2],
-         surv_diff =  s$surv[1] -  s$surv[2])
+         one_year_surv1 = s$surv[1],
+         one_year_surv2 = s$surv[2],
+         surv_diff =  abs(s$surv[1] -  s$surv[2]))
   }))
 }))
 
