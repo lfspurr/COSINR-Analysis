@@ -13,7 +13,7 @@ loo_cv <- bind_rows(lapply(steps, function(step) {
   bind_rows(lapply(1:nrow(temp), function(i) {
     temp_loo <- temp[-i,]
     if(length(unique(temp_loo$timing)) < 2) return()
-    s <- summary(survfit(Surv(os_time, os_event) ~ timing, data = temp_loo), times = 12, extend = TRUE)
+    s <- summary(survfit(Surv(os_time, os_event) ~ timing, data = temp_loo), times = 6, extend = TRUE)
     s2 <- survdiff(Surv(os_time, os_event) ~ timing, data = temp_loo)
     list(aneuploidy_thresh = step,
          iteration = i, 
